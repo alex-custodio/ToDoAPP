@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xff5a5390),
+        backgroundColor: Color.fromARGB(255, 101, 94, 158),
         title: Center(child: Text("To Do List")),
         elevation: 0,
       ),
