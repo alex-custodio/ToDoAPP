@@ -29,12 +29,18 @@ class _HomePageState extends State<HomePage> {
     Navigator.of(context).pop();
   }
 
+  void onDelete(int index) {
+    setState(() {
+      tasks.removeAt(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 101, 94, 158),
-        title: Center(child: Text("To Do List")),
+        title: Center(child: Text("A fazer")),
         elevation: 0,
       ),
       floatingActionButton: FloatingActionButton(
@@ -59,6 +65,7 @@ class _HomePageState extends State<HomePage> {
               taskName: tasks[index][0],
               checkMarked: tasks[index][1],
               onChanged: (value) => onChanged(value, index),
+              onDelete: (context) => onDelete(index),
             );
           })),
       backgroundColor: Color(0xff252242),
