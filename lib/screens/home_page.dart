@@ -10,6 +10,13 @@ class _HomePageState extends State<HomePage> {
   List tasks = [
     ['Task1', false],
     ['Task2', false],
+    ['Task2', false],
+    ['Task2', false],
+    ['Task2', false],
+    ['Task2', false],
+    ['Task2', false],
+    ['Task2', false],
+    ['Task2', false],
   ];
   void onChanged(bool? value, int index) {
     setState(() {
@@ -27,7 +34,11 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          
+          showDialog(
+              context: context,
+              builder: ((context) {
+                return AlertDialog();
+              }));
         },
         child: Icon(Icons.add),
         backgroundColor: Color.fromARGB(255, 101, 94, 158),
