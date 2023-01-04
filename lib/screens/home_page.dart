@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:todoapp/components/task_box.dart';
+import 'package:todoapp/data/database.dart';
 
 import '../components/dialog.dart';
 
@@ -9,30 +11,44 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final _myBox = Hive.box('myBox');
   final _controller = new TextEditingController();
-  List tasks = [];
+  ToDoDatabase db = new ToDoDatabase();
+
+  @override
+  void initState() {
+    if (_myBox.get("TODOLIST") != null) {
+      db.load();
+    }
+    super.initState();
+  }
+
   void onChanged(bool? value, int index) {
     setState(() {
-      tasks[index][1] = !tasks[index][1];
+      db.tasks[index][1] = !db.tasks[index][1];
     });
+    db.update();
   }
 
   void onAdd() {
     setState(() {
-      tasks.add([_controller.text, false]);
+      db.tasks.add([_controller.text, false]);
       _controller.clear();
       onCancel();
     });
+    db.update();
   }
 
   void onCancel() {
     Navigator.of(context).pop();
+    _controller.clear();
   }
 
   void onDelete(int index) {
     setState(() {
-      tasks.removeAt(index);
+      db.tasks.removeAt(index);
     });
+    db.update();
   }
 
   @override
@@ -40,7 +56,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 101, 94, 158),
-        title: Center(child: Text("A fazer")),
+        title: Center(child: Text("Coisas Para Fazer")),
         elevation: 0,
       ),
       floatingActionButton: FloatingActionButton(
@@ -59,11 +75,11 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Color.fromARGB(255, 101, 94, 158),
       ),
       body: ListView.builder(
-          itemCount: tasks.length,
+          itemCount: db.tasks.length,
           itemBuilder: ((context, index) {
             return TaskBox(
-              taskName: tasks[index][0],
-              checkMarked: tasks[index][1],
+              taskName: db.tasks[index][0],
+              checkMarked: db.tasks[index][1],
               onChanged: (value) => onChanged(value, index),
               onDelete: (context) => onDelete(index),
             );
